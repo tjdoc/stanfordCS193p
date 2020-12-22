@@ -9,9 +9,14 @@ import Foundation
 
 struct Cards {
     var emojiCard = Array("🍎🍐🍊🍌🍉🍇🥥🍑🍓🥝🍅🥑🌶🌽🥕🍗🍖🥨🍔🍟🍕🌮🍰🎂🍩🥐🦴⚽️🏀🏈⚾️🏓⛸🥌🎲🎻🎸🎳🚗🚑🚌🚚🛵🚲✈️").map{String($0)}
-    let numPairs = 8
+    let numPairs: Int
+    init(_ numCards: Int) {
+        numPairs = numCards/2
+    }
+
     mutating func shuffleCards() {
         emojiCard.shuffle()
         emojiCard = Array(emojiCard[0..<numPairs] + emojiCard[0..<numPairs]).shuffled()
+        emojiCard.shuffle()
     }
 }

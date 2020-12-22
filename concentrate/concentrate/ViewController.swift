@@ -9,22 +9,22 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var cards: [UIButton]!
-    var myCards = Cards()
-    lazy var matched = Array(repeating: false, count: myCards.numPairs*2)
-    var selectedCards = [Int]()
-    var pop2 = false
-    var numRemoved = 0
-    let bg = UIColor.systemBlue
+    @IBOutlet private var cards: [UIButton]!
+    private lazy var myCards = Cards(cards.count)
+    private lazy var matched = Array(repeating: false, count: cards.count)
+    private var selectedCards = [Int]()
+    private var pop2 = false
+    private var numRemoved = 0
+    private let bg = UIColor.systemBlue
     
     override func viewDidLoad() {
         super.viewDidLoad()
         newGame()
     }
     
-    @IBAction func selectCard(_ sender: Any) {
+    @IBAction private func selectCard(_ sender: Any) {
         for (ii, card) in cards.enumerated() {
-            if card == sender as! NSObject && matched[ii] == false {
+            if card == sender as! NSObject && matched[ii] == false && !selectedCards.contains(ii) {
                 showCard(ii)
                 switch selectedCards.count {
                 case 2:
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func showCard(_ id: Int) {
+    private func showCard(_ id: Int) {
         selectedCards.append(id)
         print(selectedCards)
         cards[id].setTitle(myCards.emojiCard[id], for: .normal)
@@ -63,26 +63,26 @@ class ViewController: UIViewController {
         cards[id].titleLabel?.font =  UIFont(name: "Helvetica", size: 60)
     }
     
-    func hideCard(_ id: Int) {
+    private func hideCard(_ id: Int) {
         cards[id].backgroundColor = bg
         cards[id].setTitle("", for: .normal)
     }
     
-    func removeCard(_ id: Int) {
+    private func removeCard(_ id: Int) {
         cards[id].backgroundColor = UIColor(white: 0, alpha: 0)
         cards[id].setTitle("", for: .normal)
         numRemoved += 1
     }
     
-    func complete() {
+    private func complete() {
         print("Congratulations!")
         newGame()
     }
     
-    func newGame() {
-        myCards = Cards()
+    private func newGame() {
+        myCards = Cards(cards.count)
         myCards.shuffleCards()
-        matched = Array(repeating: false, count: myCards.numPairs*2)
+        matched = Array(repeating: false, count: cards.count)
         selectedCards = [Int]()
         cards.forEach {
             $0.backgroundColor = bg
